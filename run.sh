@@ -2,8 +2,10 @@ nginx
 cd /root
 curl -O "https://raw.githubusercontent.com/ChenZaichuang/shell_vpn/main/install.sh"
 chmod +x install.sh
-if [ -z ${VPN_PASSWORD} ]; then
+if [ -z ${VPN_ENV_VARS} ]; then
   . /root/config.sh
+else
+  eval $(echo ${VPN_ENV_VARS} | jq -r 'to_entries | .[] | "export " + .key + "=\(.value)"')
 fi
 
 echo NODE_NAME:${NODE_NAME}
